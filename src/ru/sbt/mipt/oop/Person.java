@@ -16,6 +16,10 @@ public class Person {
         return spouse;
     }
 
+    public void setSpouseNull(){
+        this.spouse = null;
+    }
+
     public void setSpouse(Person person){
         this.spouse = person;
     }
@@ -37,6 +41,8 @@ public class Person {
 
         System.out.println(alex.marry(vika));
 
+        System.out.println(alex.marry(nelly));
+        System.out.println(alex.getSpouse().getName());
 
     }
 
@@ -56,7 +62,7 @@ public class Person {
                     return true;
                 }
             } else {
-                if (this.spouse.equals(null)) {
+                if (this.spouse == null) {
                     person.divorce();
                     this.spouse = person;
                     person.setSpouse(person);
@@ -77,6 +83,7 @@ public class Person {
 
 
     public void divorce(){
+        this.getSpouse().setSpouseNull();
         this.spouse = null;
     }
 
