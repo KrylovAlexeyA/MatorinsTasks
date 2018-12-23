@@ -3,9 +3,7 @@ package ru.sbt.mipt.oop.countmap;
 
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 
 public class CountMap<K> implements ICountMap<K> {
