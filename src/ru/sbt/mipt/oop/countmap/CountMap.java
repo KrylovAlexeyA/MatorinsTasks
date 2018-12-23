@@ -2,86 +2,49 @@ package ru.sbt.mipt.oop.countmap;
 
 
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class CountMap<V> implements ICountMap<V> {
 
-    public class Node<V> {
-        final V val;
-        int count;
+public class CountMap<K> implements ICountMap<K> {
 
-        public Node(V val, int count) {
-            this.val = val;
-            this.count = count;
-        }
-        private Node(V val) {
-            this.val = val;
-            count = 1;
-        }
+    public Map<K, Integer> entryMap;
 
-        public V getVal() {
-            return val;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public int add() {
-            return ++this.count;
-        }
-
-        public int remove() {
-            return --this.count;
-        }
-    }
-
-    // Fields
-    private Set<Node> entrySet = new HashSet<>();
-    private int size;
-
-    public CountMap() {
-        this.size = 0;
-    }
+    public CountMap() { entryMap = new HashMap<>(); }
 
     // Methods
     @Override
-    public void add(V val) {
+    public void add(K key) {
         boolean isFound = false;
-        for (Node node: entrySet) {
-            if (node.val == val) {
-                node.count++;
+        for (Map.Entry<K, Integer> entry : entryMap.entrySet()) {
+            if (entry.getKey() == key) {
+                entryMap.put(key, entry.getValue() + 1);
                 isFound = true;
             }
         }
         if (!isFound) {
-            entrySet.add(new Node<>(val));
+            entryMap.put(key, 1);
         }
     }
 
     @Override
-    public int getCount(V val) {
-        for (Node node: entrySet) {
-            if (node.val == val) {
-                return node.count;
-            }
-        }
-        return 0;
+    public int getCount(K key) {
+        return entryMap.get(key);
     }
 
     @Override
-    public int remove(V val) {
-        for (Node node: entrySet) {
-            if (node.val == val) {
-                if (node.count > 1) {
-                    return node.count--;
+    public int remove(K key) {
+        for (Map.Entry<K, Integer> entry : entryMap.entrySet()) {
+            if (entry.getKey() == key) {
+                int val = entry.getValue();
+                if ( entry.getValue() > 1) {
+                    entryMap.put(key, entry.getValue() - 1);
                 } else {
-                    entrySet.remove(node);
-                    return node.count;
+                    entryMap.remove(key);
                 }
-
+                return val;
             }
         }
         return 0;
@@ -89,21 +52,29 @@ public class CountMap<V> implements ICountMap<V> {
 
     @Override
     public int size() {
-        return size;
+        return entryMap.size();
     }
 
     @Override
-    public void addAll(ICountMap source) {
-        // Тут закончил
+    public void addAll(CountMap<K> source) {
+        Map<K, Integer> sourceMap = source.toMap();
+        for (Map.Entry<K, Integer> entrySource : sourceMap.entrySet() ) {
+            K sourceKey = entrySource.getKey();
+            if (entryMap.get(sourceKey) != null) {
+                entryMap.put(sourceKey, entryMap.get(sourceKey) + entrySource.getValue());
+            } else {
+                entryMap.put(sourceKey, entrySource.getValue());
+            }
+        }
     }
 
     @Override
-    public Map toMap() {
-        return null;
+    public Map<K, Integer> toMap() {
+        return entryMap;
     }
 
     @Override
-    public void toMap(Map destination) {
-
+    public void toMap(Map<K, Integer> destination) {
+        destination.putAll(entryMap);
     }
 }
