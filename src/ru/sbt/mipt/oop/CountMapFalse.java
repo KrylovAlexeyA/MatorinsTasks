@@ -1,21 +1,21 @@
 package ru.sbt.mipt.oop;
 
-import java.sql.SQLOutput;
+
 import java.util.ArrayList;
 
-public class CountMap {
+public class CountMapFalse {
     String txt;
     ArrayList<String> list = new ArrayList<>();
 
     public static void main(String[] args) {
         String txt = "abb egggg tttttt";
-        CountMap countMap = new CountMap(txt);
+        CountMapFalse countMap = new CountMapFalse(txt);
         countMap.parse();
         countMap.printText();
 
     }
 
-    public CountMap(String txt){
+    public CountMapFalse(String txt){
         this.txt = txt;
     }
 
